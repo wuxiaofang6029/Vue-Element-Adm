@@ -1,9 +1,9 @@
 <template>
   <div>
     <el-table :data="tableData" style="width: 100%">
-      <el-table-column prop="id" label="ID" width="60">
+      <el-table-column prop="id" label="ID" width="40">
       </el-table-column>
-      <el-table-column label="头像" width="80">
+      <el-table-column label="头像" width="60">
         <template slot-scope="scope">
              <img :src="scope.row.avatar" alt="" style="width: 100%">
         </template>
@@ -104,8 +104,6 @@
                 } else {
                     callback();
                 }
-                j
-                j
             }
             const phoneValidator = (rule, value, callback) => {
                 if (!/^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/.test(value)) {
@@ -164,7 +162,8 @@
             ...mapActions({
                 getUserList: 'list/getUserList',
                 updateUserInfo: 'list/updateUserInfo',
-                deleteUser: 'list/deleteUser'
+                deleteUser: 'list/deleteUser',
+                modifyRoler: 'list/modifyRoler'
             }),
             handleEdit(index, row) {
                 console.log('index...', index, row);
@@ -222,41 +221,70 @@
                 this.myRolers = [...new Set(this.myRolers)];
             },
             submit() {
-                this.$refs.form.validate(valid => {
-                    if (valid) {
-                        console.log('currentUser...', this.currentUser);
-                        let {
-                            id,
-                            username,
-                            profile,
-                            email,
-                            phone
-                        } = this.currentUser;
-                        this.updateUserInfo({
-                            id,
-                            username,
-                            profile,
-                            email,
-                            phone
-                        }).then(res => {
-                            this.$message({
-                                message: res,
-                                center: true,
-                                type: 'success'
-                            });
-                            this.getUserList({
-                                page: this.current
-                            });
-                        }).catch(err => {
-                            this.$message({
-                                message: err,
-                                center: true,
-                                type: 'error'
-                            });
-                        })
-                        this.showDialog = false;
-                    }
-                })
+                if (this.type == 'edit') {
+                    this.$refs.form.validate(valid => {
+                        if (valid) {
+                            console.log('currentUser...', this.currentUser);
+                            let {
+                                id,
+                                username,
+                                profile,
+                                email,
+                                phone
+                            } = this.currentUser;
+                            this.updateUserInfo({
+                                id,
+                                username,
+                                profile,
+                                email,
+                                phone
+                            }).then(res => {
+                                this.$message({
+                                    message: res,
+                                    center: true,
+                                    type: 'success'
+                                });
+                                this.getUserList({
+                                    page: this.current
+                                });
+                            }).catch(err => {
+                                this.$message({
+                                    message: err,
+                                    center: true,
+                                    type: 'error'
+                                });
+                            })
+                            this.showDialog = false;
+                        }
+                    })
+                } else if (this.type == 'roler') {
+                    let {
+                        id
+                    } = this.currentUser;
+                    let rolersId = this.myRolers.map(item => {
+                        return this.rolers.findIndex(value => value == item) + 1
+                    })
+                    this.modifyRoler({
+                        uid: id,
+                        rolersId
+                    }).then(res => {
+                        this.$message({
+                            message: res,
+                            center: true,
+                            type: 'success'
+                        });
+                        this.getUserList({
+                            page: this.current
+                        });
+                    }).catch(err => {
+                        this.$message({
+                            message: err,
+                            center: true,
+                            type: 'error'
+                        });
+                    })
+                    this.showDialog = false;
+                }
             }
         }
     }

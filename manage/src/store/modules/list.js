@@ -1,7 +1,8 @@
 import {
     getUserList,
     updateUserInfo,
-    deleteUser
+    deleteUser,
+    modifyRoler
 } from '@/api/user'
 
 const state = {
@@ -55,6 +56,20 @@ const actions = {
     }, data) {
         return new Promise((resolve, reject) => {
             deleteUser(data).then(res => {
+                if (res.data.code == 1) {
+                    resolve(res.data.msg);
+                } else {
+                    reject(res.data.msg);
+                }
+            }).catch(err => {
+                reject(err);
+            })
+        })
+    },
+    // 为用户分配角色
+    modifyRoler(context, data) {
+        return new Promise((resolve, reject) => {
+            modifyRoler(data).then(res => {
                 if (res.data.code == 1) {
                     resolve(res.data.msg);
                 } else {
