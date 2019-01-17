@@ -17,9 +17,7 @@ const mutations = {
 
 const actions = {
     // 获取用户列表
-    getUserList({
-        commit
-    }, query) {
+    getUserList({ commit }, query) {
         return new Promise((resolve, reject) => {
             getUserList(query).then(res => {
                 console.log('res...', res);
@@ -35,9 +33,7 @@ const actions = {
         })
     },
     // 更新用户信息
-    updateUserInfo({
-        commit
-    }, data) {
+    updateUserInfo({ commit }, data) {
         return new Promise((resolve, reject) => {
             updateUserInfo(data).then(res => {
                 if (res.data.code == 1) {

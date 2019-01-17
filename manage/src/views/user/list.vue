@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-table :data="tableData" style="width: 100%">
-      <el-table-column prop="id" label="ID" width="40">
+      <el-table-column prop="id" label="ID" width="50">
       </el-table-column>
       <el-table-column label="头像" width="60">
         <template slot-scope="scope">
@@ -46,7 +46,7 @@
         </template>
 </el-table-column>
 </el-table>
-<el-pagination :current-page="current" :pager-count="13" background @current-change="handleChange" layout="prev, pager, next" :total="100">
+<el-pagination :current-page="current" :pager-count="13" background @current-change="handleChange" layout="prev, pager, next" :total="300">
 </el-pagination>
 <el-dialog :title="type=='edit'?'编辑用户信息':'修改用户角色'" :visible.sync="showDialog" width="60%" center :before-close="handleClose">
     <el-form :model="currentUser" label-position="right" label-width="80px" :rules="editRules" ref="form">
